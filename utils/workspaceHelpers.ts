@@ -6,14 +6,13 @@ export interface WorkspaceItem {
   date: string;
 }
 
-// Συνάρτηση αποθήκευσης στο Vault με έλεγχο διπλοεγγραφής
 export function saveItemToWorkspace(title: string, type: string, content: string) {
   try {
     const existing: WorkspaceItem[] = JSON.parse(localStorage.getItem("utility_hub_workspace") || "[]");
     
-    // Αποφυγή αποθήκευσης ακριβώς του ίδιου περιεχομένου
+    // Αποφυγή διπλοεγγραφής αν υπάρχει ήδη ακριβώς το ίδιο
     const isDuplicate = existing.some(item => item.content === content && item.type === type);
-    if (isDuplicate) return;
+    if (isDuplicate) return false;
 
     const newItem: WorkspaceItem = {
       id: Date.now().toString(),
@@ -32,7 +31,6 @@ export function saveItemToWorkspace(title: string, type: string, content: string
   }
 }
 
-// Συνάρτηση για πραγματικό download αρχείου κειμένου (TXT)
 export function downloadFile(filename: string, content: string, mimeType = "text/plain;charset=utf-8") {
   const blob = new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
