@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { FileText, ArrowLeft, Download, Sparkles, Crown, CheckCircle2, Lock } from "lucide-react";
+import { FileText, ArrowLeft, Download, Sparkles, Crown, CheckCircle2, Lock, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ResumeBuilderPage() {
@@ -14,19 +14,13 @@ export default function ResumeBuilderPage() {
   const [generatedBio, setGeneratedBio] = useState("Παθιασμένος Full-Stack Developer με 5+ έτη εμπειρίας σε scalable web applications, αρχιτεκτονική microservices και cloud deployment.");
   const [hasUnlocked, setHasUnlocked] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
 
   useEffect(() => {
     const unlocked = localStorage.getItem("utility_hub_resume_unlocked");
     if (unlocked === "true") setHasUnlocked(true);
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("unlocked") === "true") {
-      localStorage.setItem("utility_hub_resume_unlocked", "true");
-      setHasUnlocked(true);
-      window.print();
-    }
   }, []);
 
   const handleGenerateAI = () => {
@@ -52,6 +46,14 @@ export default function ResumeBuilderPage() {
       setShowPaywall(true);
       return;
     }
+    window.print();
+  };
+
+  const handleVerifyPayment = () => {
+    // Επαλήθευση πληρωμής από τον χρήστη
+    localStorage.setItem("utility_hub_resume_unlocked", "true");
+    setHasUnlocked(true);
+    setShowVerificationModal(false);
     window.print();
   };
 
@@ -167,6 +169,13 @@ export default function ResumeBuilderPage() {
                       Το AI δημιούργησε το βιογραφικό σας. Πληρώστε 3€ για να ξεκλειδώσετε το καθαρό PDF.
                     </p>
                   </div>
+                  <button 
+                    type="button"
+                    onClick={() => setShowPaywall(true)}
+                    className="px-5 py-2.5 rounded-xl bg-purple-500 text-black font-bold text-xs shadow-lg hover:bg-purple-400 cursor-pointer"
+                  >
+                    Ξεκλείδωμα Τώρα (3€)
+                  </button>
                 </div>
               )}
             </div>
@@ -202,7 +211,7 @@ export default function ResumeBuilderPage() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold text-white">Πληρωμή & Άμεσο Download</h3>
                 <p className="text-xs text-zinc-400">
-                  Ολοκληρώστε την πληρωμή (3€) μέσω Revolut Pay για να κατεβάσετε το επαγγελματικό σας PDF.
+                  Κάντε κλικ στον σύνδεσμο Revolut για να ολοκληρώσετε τη μεταφορά (3€) και έπειτα πατήστε επιβεβαίωση.
                 </p>
               </div>
 
@@ -212,9 +221,9 @@ export default function ResumeBuilderPage() {
                   target="_blank" 
                   rel="noopener noreferrer"
                   onClick={() => {
-                    localStorage.setItem("utility_hub_resume_unlocked", "true");
-                    setHasUnlocked(true);
+                    // Κλείνουμε το paywall και ανοίγουμε το modal επαλήθευσης πληρωμής
                     setShowPaywall(false);
+                    setShowVerificationModal(true);
                   }}
                   className="block w-full py-3.5 rounded-2xl bg-purple-500 hover:bg-purple-400 text-black font-bold text-xs transition-all shadow-lg shadow-purple-500/25 cursor-pointer text-center"
                 >
@@ -226,6 +235,48 @@ export default function ResumeBuilderPage() {
                   className="w-full py-3 text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
                 >
                   Ακύρωση
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* VERIFICATION MODAL (NEW) */}
+      <AnimatePresence>
+        {showVerificationModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative max-w-md w-full p-8 rounded-3xl bg-[#12131c] border border-cyan-500/40 shadow-2xl space-y-6 text-center"
+            >
+              <div className="mx-auto w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                <ShieldCheck className="w-7 h-7" />
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white">Επιβεβαίωση Πληρωμής</h3>
+                <p className="text-xs text-zinc-400">
+                  Έχετε ολοκληρώσει επιτυχώς τη συναλλαγή σας στη Revolut; Πατήστε παρακάτω για να ξεκλειδώσετε άμεσα το PDF σας.
+                </p>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <button 
+                  type="button"
+                  onClick={handleVerifyPayment}
+                  className="w-full py-3.5 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs transition-all shadow-lg shadow-cyan-500/25 cursor-pointer"
+                >
+                  ✓ Έχω πληρώσει - Ξεκλείδωμα PDF
+                </button>
+
+                <button 
+                  onClick={() => setShowVerificationModal(false)}
+                  className="w-full py-3 text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+                >
+                  Επιστροφή
                 </button>
               </div>
             </motion.div>
