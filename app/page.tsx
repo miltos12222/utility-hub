@@ -7,13 +7,21 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
   Link2, FileText, Lock, QrCode, Sparkles, 
-  Search, ArrowRight, Zap, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp, Box, Send
+  Search, ArrowRight, Zap, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp, Box, Send, DollarSign
 } from "lucide-react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const tools = [
+    {
+      title: "AI Invoice & Payment Reminder",
+      desc: "Δημιουργήστε επαγγελματικές υπενθυμίσεις πληρωμής για απλήρωτα τιμολόγια με δυνατότητα PDF.",
+      icon: <DollarSign className="w-6 h-6 text-emerald-400" />,
+      href: "/tools/ai-invoice-reminder",
+      category: "Business",
+      tag: "100% Free"
+    },
     {
       title: "AI LinkedIn Outreach",
       desc: "Δημιουργήστε έξυπνα, non-spammy μηνύματα δικτύωσης και πωλήσεων για το LinkedIn.",
@@ -192,7 +200,7 @@ export default function Home() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
               <input 
                 type="text"
-                placeholder="Αναζήτηση εργαλείου (π.χ. Business Plan, LinkedIn Outreach, PDF)..."
+                placeholder="Αναζήτηση εργαλείου (π.χ. Invoice Reminder, LinkedIn, Business Plan)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#12131c] border border-white/15 text-xs sm:text-sm placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500 transition-all text-white shadow-2xl"
