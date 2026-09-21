@@ -18,13 +18,17 @@ export const metadata: Metadata = {
   description: "Δωρεάν καθημερινά utilities και προηγμένες 3D AI υπηρεσίες.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="el"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-[#0b0c10] text-[#e5e7eb]">
         {children}
         <Analytics />
       </body>
