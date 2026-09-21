@@ -105,9 +105,23 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#e5e7eb] selection:bg-cyan-500/25 selection:text-white flex flex-col justify-between overflow-x-hidden relative">
       
-      {/* 3D BACKGROUND GLOW ORBS */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+      {/* 3D BACKGROUND GLOW ORBS WITH ADVANCED ANIMATION */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.2, 0.1],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none" 
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1.2, 1, 1.2],
+          opacity: [0.1, 0.25, 0.1],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-purple-500/15 rounded-full blur-[140px] pointer-events-none" 
+      />
 
       <Navbar />
 
@@ -170,14 +184,14 @@ export default function Home() {
               <motion.div
                 key={idx}
                 whileHover={{ 
-                  y: -8, 
-                  scale: 1.03,
-                  rotateX: 2,
-                  rotateY: 2,
-                  boxShadow: "0 20px 40px -15px rgba(6, 182, 212, 0.2)"
+                  y: -10, 
+                  scale: 1.04,
+                  rotateX: 3,
+                  rotateY: 3,
+                  boxShadow: "0 25px 50px -12px rgba(6, 182, 212, 0.25)"
                 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="h-full"
               >
                 <Link 
