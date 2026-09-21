@@ -6,14 +6,22 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
-  Link2, FileText, Lock, Code, QrCode, Sparkles, 
-  Search, ArrowRight, Zap, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp, Globe, Box
+  Link2, FileText, Lock, QrCode, Sparkles, 
+  Search, ArrowRight, Zap, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp, Box, Send
 } from "lucide-react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const tools = [
+    {
+      title: "AI LinkedIn Outreach",
+      desc: "Δημιουργήστε έξυπνα, non-spammy μηνύματα δικτύωσης και πωλήσεων για το LinkedIn.",
+      icon: <Send className="w-6 h-6 text-cyan-400" />,
+      href: "/tools/ai-outreach",
+      category: "Career",
+      tag: "100% Free"
+    },
     {
       title: "AI Startup Business Plan",
       desc: "Επαγγελματικό επενδυτικό Business Plan 3ετίας και financial model με τη βοήθεια της AI.",
@@ -184,7 +192,7 @@ export default function Home() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
               <input 
                 type="text"
-                placeholder="Αναζήτηση εργαλείου (π.χ. Business Plan, Contract, PDF)..."
+                placeholder="Αναζήτηση εργαλείου (π.χ. Business Plan, LinkedIn Outreach, PDF)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#12131c] border border-white/15 text-xs sm:text-sm placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500 transition-all text-white shadow-2xl"
