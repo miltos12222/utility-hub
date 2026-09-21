@@ -6,10 +6,15 @@ export interface WorkspaceItem {
   date: string;
 }
 
-// Συνάρτηση αποθήκευσης στο Vault
+// Συνάρτηση αποθήκευσης στο Vault με έλεγχο διπλοεγγραφής
 export function saveItemToWorkspace(title: string, type: string, content: string) {
   try {
-    const existing = JSON.parse(localStorage.getItem("utility_hub_workspace") || "[]");
+    const existing: WorkspaceItem[] = JSON.parse(localStorage.getItem("utility_hub_workspace") || "[]");
+    
+    // Αποφυγή αποθήκευσης ακριβώς του ίδιου περιεχομένου
+    const isDuplicate = existing.some(item => item.content === content && item.type === type);
+    if (isDuplicate) return;
+
     const newItem: WorkspaceItem = {
       id: Date.now().toString(),
       title,
@@ -17,7 +22,9 @@ export function saveItemToWorkspace(title: string, type: string, content: string
       content,
       date: new Date().toLocaleDateString("el-GR"),
     };
-    localStorage.setItem("utility_hub_workspace", JSON.stringify([newItem, ...existing]));
+    
+    const updated = [newItem, ...existing];
+    localStorage.setItem("utility_hub_workspace", JSON.stringify(updated));
     return true;
   } catch (e) {
     console.error("Failed to save to workspace", e);
