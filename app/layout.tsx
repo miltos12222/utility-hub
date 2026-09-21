@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bookmark, X, Trash2, Box, Sparkles } from "lucide-react";
 
@@ -160,6 +161,7 @@ export default function RootLayout({
         {children}
         <InlineWorkspaceSidebar />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
