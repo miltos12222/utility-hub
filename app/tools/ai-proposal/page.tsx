@@ -1,225 +1,85 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { Briefcase, ArrowLeft, Download, Sparkles, Crown, CheckCircle2, Lock } from "lucide-react";
+import { ArrowLeft, Download, Sparkles, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function AiProposalPage() {
-  const [clientName, setClientName] = useState("Acme Corp");
-  const [projectIdea, setProjectIdea] = useState("E-shop κατασκευή με Next.js, Stripe payments και dark mode UI.");
-  const [budget, setBudget] = useState("2500€");
-  const [generatedProposal, setGeneratedProposal] = useState("");
-  const [hasUnlocked, setHasUnlocked] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
+export default function AIProposalPage() {
+  const [client, setClient] = useState("Εταιρεία / Πελάτης");
+  const [budget, setBudget] = useState("2.500€");
+  const [generatedProposal, setGeneratedProposal] = useState("Επαγγελματική Προσφορά Έργου:\nΑναλαμβάνουμε την υλοποίηση σύμφωνα με τις υψηλότερες προδιαγραφές ποιότητας και ταχύτητας.");
   const [isGenerating, setIsGenerating] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
-
-  useEffect(() => {
-    const unlocked = localStorage.getItem("utility_hub_proposal_unlocked");
-    if (unlocked === "true") setHasUnlocked(true);
-
-    setGeneratedProposal(`ΕΠΑΓΓΕΛΜΑΤΙΚΗ ΠΡΟΣΦΟΡΑ ΕΡΓΟΥ (SOW)\n\nΠρος: ${clientName}\nΠροϋπολογισμός: ${budget}\n\nΠεριγραφή Έργου: ${projectIdea}\n\n1. Παραδοτέα:\n- Αρχιτεκτονική UI/UX & Responsive Design\n- Υλοποίηση Backend & Database Integration\n- Testing & Deployment\n\nΧρονοδιάγραμμα: 3 Εβδομάδες.`);
-  }, [clientName, projectIdea, budget]);
 
   const handleGenerateAI = () => {
     setIsGenerating(true);
     setSuccessMessage(false);
-
     setTimeout(() => {
       setIsGenerating(false);
-      setGeneratedProposal(`[AI Optimized Scope & Proposal]\n\nΠρος: ${clientName}\nΕκτιμώμενο Κόστος: ${budget}\n\nΑνάλυση & Στόχοι: ${projectIdea}\n\n• Φάση 1: Ανάλυση απαιτήσεων & Wireframes (Εβδομάδα 1)\n• Φάση 2: Ανάπτυξη & Code Integration (Εβδομάδα 2)\n• Φάση 3: QA Testing & Live Launch (Εβδομάδα 3)\n\nΌροι Πληρωμής: 50% προκαταβολή, 50% με την παράδοση.`);
+      setGeneratedProposal(`ΕΠΑΓΓΕΛΜΑΤΙΚΗ ΠΡΟΣΦΟΡΑ ΓΙΑ ΤΟΝ ΠΕΛΑΤΗ: ${client}\n\n• Εκτιμώμενος προϋπολογισμός: ${budget}\n• Χρονοδιάγραμμα παράδοσης: 4 εβδομάδες.\n• Παραδοτέα: Πλήρης πηγαίος κώδικας, documentation και τεχνική υποστήριξη.`);
       setSuccessMessage(true);
-
-      setTimeout(() => {
-        if (!hasUnlocked) setShowPaywall(true);
-      }, 1800);
     }, 1500);
-  };
-
-  const handleDownload = () => {
-    if (!hasUnlocked) {
-      setShowPaywall(true);
-      return;
-    }
-    window.print();
   };
 
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#e5e7eb] selection:bg-cyan-500/25 selection:text-white flex flex-col justify-between">
       <Navbar />
-
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 space-y-8 w-full">
-        
         <Link href="/" className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-cyan-400 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Επιστροφή στα Εργαλεία
         </Link>
-
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono font-bold">
-            <Sparkles className="w-3.5 h-3.5" /> AI Business Suite
+            <Sparkles className="w-3.5 h-3.5" /> AI Proposal & Scope Generator (100% Free)
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">AI Project Proposal & Scope Generator</h1>
-          <p className="text-xs sm:text-sm text-zinc-400">
-            Περιγράψτε τι έργο θέλει ο πελάτης σας και αφήστε την AI να συντάξει επαγγελματική προσφορά και χρονοδιάγραμμα.
-          </p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">AI Proposal & Scope</h1>
+          <p className="text-xs sm:text-sm text-zinc-400">Συντάξτε επαγγελματικές προσφορές έργων και χρονοδιαγράμματα.</p>
         </div>
 
-        {/* Success Feedback Banner */}
         <AnimatePresence>
           {successMessage && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-center font-mono text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-lg"
-            >
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-center font-mono text-xs font-bold flex items-center justify-center gap-2">
               <CheckCircle2 className="w-5 h-5" />
-              <span>✨ Η επαγγελματική προσφορά συντάχθηκε επιτυχώς! Προχωρήστε στην προεπισκόπηση και ξεκλείδωμα.</span>
+              <span>✨ Η προσφορά δημιουργήθηκε επιτυχώς!</span>
             </motion.div>
           )}
         </AnimatePresence>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Inputs */}
-          <div className="lg:col-span-5 p-6 sm:p-8 rounded-3xl bg-white/[0.03] border border-white/10 space-y-5 shadow-2xl">
-            <h2 className="text-sm font-bold font-mono text-zinc-300">1. Στοιχεία Έργου & Πελάτη</h2>
-            
+          <div className="lg:col-span-5 p-6 rounded-3xl bg-white/[0.03] border border-white/10 space-y-5 shadow-2xl">
+            <h2 className="text-sm font-bold font-mono text-zinc-300">Στοιχεία Προσφοράς</h2>
             <div className="space-y-1">
-              <label className="text-[11px] font-mono text-zinc-400">Όνομα Πελάτη / Εταιρείας</label>
-              <input 
-                type="text"
-                value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
-                className="w-full p-3 rounded-xl bg-black/50 border border-white/15 text-xs text-white"
-              />
+              <label className="text-[11px] font-mono text-zinc-400">Όνομα Πελάτη</label>
+              <input type="text" value={client} onChange={(e) => setClient(e.target.value)} className="w-full p-3 rounded-xl bg-black/50 border border-white/15 text-xs text-white" />
             </div>
-
             <div className="space-y-1">
               <label className="text-[11px] font-mono text-zinc-400">Εκτιμώμενο Budget</label>
-              <input 
-                type="text"
-                value={budget}
-                onChange={(e) => setBudget(e.target.value)}
-                className="w-full p-3 rounded-xl bg-black/50 border border-white/15 text-xs text-white"
-              />
+              <input type="text" value={budget} onChange={(e) => setBudget(e.target.value)} className="w-full p-3 rounded-xl bg-black/50 border border-white/15 text-xs text-white" />
             </div>
-
-            <div className="space-y-1">
-              <label className="text-[11px] font-mono text-zinc-400">AI Prompt / Περιγραφή Απαιτήσεων Έργου</label>
-              <textarea 
-                rows={3}
-                value={projectIdea}
-                onChange={(e) => setProjectIdea(e.target.value)}
-                className="w-full p-3 rounded-xl bg-black/50 border border-white/15 text-xs text-white resize-none"
-              />
-            </div>
-
-            <button 
-              type="button"
-              onClick={handleGenerateAI}
-              disabled={isGenerating}
-              className="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer"
-            >
+            <button type="button" onClick={handleGenerateAI} disabled={isGenerating} className="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
               <Sparkles className="w-4 h-4" />
-              <span>{isGenerating ? "AI Generating Proposal..." : "Σύνταξη Προσφοράς με AI"}</span>
+              <span>{isGenerating ? "Generating..." : "Δημιουργία Προσφοράς"}</span>
             </button>
           </div>
 
-          {/* Right Preview */}
-          <div className="lg:col-span-7 p-6 sm:p-8 rounded-3xl bg-white/[0.04] border border-white/15 space-y-6 shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-7 p-6 rounded-3xl bg-white/[0.04] border border-white/15 space-y-6 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <span className="text-xs font-mono text-amber-400">Live Secure Preview</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
-                {hasUnlocked ? "Unlocked (HD)" : "Protected Preview (4€)"}
-              </span>
+              <span className="text-xs font-mono text-amber-400">Live Preview</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Free</span>
             </div>
-
-            <div className="relative">
-              <div className={`space-y-4 p-6 rounded-2xl bg-black/80 border border-white/10 text-xs text-zinc-300 leading-relaxed font-mono whitespace-pre-line transition-all ${!hasUnlocked ? "blur-sm select-none pointer-events-none" : ""}`}>
-                {generatedProposal}
-              </div>
-
-              {!hasUnlocked && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px] p-6 text-center space-y-4 rounded-2xl">
-                  <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-300">
-                    <Lock className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-1">
-                    <h4 className="text-base font-bold text-white">Προστατευμένη Προεπισκόπηση</h4>
-                    <p className="text-xs text-zinc-300 max-w-xs">
-                      Η προσφορά συντάχθηκε. Πληρώστε 4€ για να ξεκλειδώσετε το καθαρό PDF προς αποστολή στον πελάτη.
-                    </p>
-                  </div>
-                </div>
-              )}
+            <div className="space-y-6 p-6 rounded-2xl bg-black/80 border border-white/10">
+              <p className="text-xs text-zinc-300 leading-relaxed whitespace-pre-line">{generatedProposal}</p>
             </div>
-
-            <button 
-              type="button"
-              onClick={handleDownload}
-              className="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs sm:text-sm transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer"
-            >
+            <button type="button" onClick={() => window.print()} className="w-full py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
               <Download className="w-4 h-4" />
-              <span>{hasUnlocked ? "Download Clean PDF (Unlocked)" : "Ξεκλείδωμα & Download PDF (4€)"}</span>
+              <span>Download Proposal (PDF)</span>
             </button>
           </div>
-
         </div>
-
       </main>
-
-      {/* PAYWALL MODAL */}
-      <AnimatePresence>
-        {showPaywall && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative max-w-md w-full p-8 rounded-3xl bg-[#12131c] border border-amber-500/40 shadow-2xl space-y-6 text-center"
-            >
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-                <Crown className="w-7 h-7" />
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Πληρωμή & Άμεσο Download</h3>
-                <p className="text-xs text-zinc-400">
-                  Ολοκληρώστε την πληρωμή (4€) μέσω Revolut Pay για να κατεβάσετε την επαγγελματική προσφορά.
-                </p>
-              </div>
-
-              <div className="space-y-3 pt-2">
-                <a 
-                  href="https://revolut.me/miltos12222" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  onClick={() => {
-                    localStorage.setItem("utility_hub_proposal_unlocked", "true");
-                    setHasUnlocked(true);
-                    setShowPaywall(false);
-                  }}
-                  className="block w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-all shadow-lg shadow-amber-500/25 cursor-pointer text-center"
-                >
-                  💳 Πληρωμή 4€ με Revolut (@miltos12222)
-                </a>
-
-                <button 
-                  onClick={() => setShowPaywall(false)}
-                  className="w-full py-3 text-xs text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
-                >
-                  Ακύρωση
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
       <Footer />
     </div>
   );
