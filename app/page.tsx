@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
   Link2, FileText, Lock, Code, QrCode, Sparkles, 
-  Heart, Search, ArrowRight, Zap, CheckCircle2, Crown, Image as ImageIcon, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp 
+  Search, ArrowRight, Zap, Image as ImageIcon, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp 
 } from "lucide-react";
 
 export default function Home() {
@@ -16,51 +16,51 @@ export default function Home() {
   const tools = [
     {
       title: "AI Startup Business Plan",
-      desc: "Επαγγελματικό επενδυτικό Business Plan 3ετίας και financial model (High-Ticket: 12€).",
+      desc: "Επαγγελματικό επενδυτικό Business Plan 3ετίας και financial model με τη βοήθεια της AI.",
       icon: <TrendingUp className="w-6 h-6 text-cyan-400" />,
       href: "/tools/ai-business-plan",
       category: "Business",
-      tag: "12€ High-Ticket"
+      tag: "100% Free"
     },
     {
       title: "AI Smart Contract Generator",
-      desc: "Συντάξτε επίσημα νομικά συμφωνητικά έργου και NDA με τη βοήθεια της AI (Premium: 5€).",
+      desc: "Συντάξτε επίσημα νομικά συμφωνητικά έργου και NDA με τη βοήθεια της AI.",
       icon: <Shield className="w-6 h-6 text-emerald-400" />,
       href: "/tools/ai-contract",
       category: "Business",
-      tag: "5€ Pay-per-use"
+      tag: "100% Free"
     },
     {
       title: "AI Proposal & Scope Generator",
-      desc: "Συντάξτε επαγγελματικές προσφορές έργων και χρονοδιαγράμματα για πελάτες (Premium: 4€).",
+      desc: "Συντάξτε επαγγελματικές προσφορές έργων και χρονοδιαγράμματα για πελάτες.",
       icon: <Briefcase className="w-6 h-6 text-amber-400" />,
       href: "/tools/ai-proposal",
       category: "Business",
-      tag: "4€ Pay-per-use"
+      tag: "100% Free"
     },
     {
       title: "AI Resume Builder",
-      desc: "Δημιουργήστε επαγγελματικό βιογραφικό και κατεβάστε το σε PDF (Premium: 3€).",
+      desc: "Δημιουργήστε επαγγελματικό βιογραφικό και κατεβάστε το σε PDF άμεσα.",
       icon: <FileText className="w-6 h-6 text-purple-400" />,
       href: "/tools/resume-builder",
       category: "Career",
-      tag: "3€ Pay-per-use"
+      tag: "100% Free"
     },
     {
       title: "AI Cover Letter",
-      desc: "Δημιουργήστε προσαρμοσμένη συνοδευτική επιστολή για αιτήσεις εργασίας (Premium: 2€).",
+      desc: "Δημιουργήστε προσαρμοσμένη συνοδευτική επιστολή για αιτήσεις εργασίας.",
       icon: <Mail className="w-6 h-6 text-pink-400" />,
       href: "/tools/cover-letter",
       category: "Career",
-      tag: "2€ Pay-per-use"
+      tag: "100% Free"
     },
     {
       title: "AI Smart PDF & File Transformer",
-      desc: "Μετατρέψτε και αναλύστε έγγραφα έξυπνα με προηγμένη τεχνητή νοημοσύνη (Premium: 2€).",
+      desc: "Μετατρέψτε και αναλύστε έγγραφα έξυπνα με προηγμένη τεχνητή νοημοσύνη.",
       icon: <Cpu className="w-6 h-6 text-purple-400" />,
       href: "/tools/file-converter",
       category: "Files",
-      tag: "2€ Pay-per-use"
+      tag: "100% Free"
     },
     {
       title: "URL Shortener",
@@ -124,7 +124,7 @@ export default function Home() {
             whileHover={{ scale: 1.05 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(6,182,212,0.15)]"
           >
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" /> Next-Gen 3D AI Platform • 2030 Standard
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" /> Next-Gen 3D AI Platform • 100% Free
           </motion.div>
           
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
@@ -135,7 +135,7 @@ export default function Home() {
           </h1>
 
           <p className="text-zinc-400 text-xs sm:text-base leading-relaxed px-2">
-            Δωρεάν καθημερινά utilities και προηγμένες 3D AI υπηρεσίες με άμεση προστατευμένη προεπισκόπηση και πληρωμή μέσω Revolut.
+            Δωρεάν καθημερινά utilities και προηγμένες 3D AI υπηρεσίες, διαθέσιμες σε όλους χωρίς περιορισμούς.
           </p>
         </motion.section>
 
@@ -191,7 +191,7 @@ export default function Home() {
                       <div className="p-3 rounded-2xl bg-black/40 border border-white/10 group-hover:scale-110 group-hover:bg-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300 shadow-lg">
                         {tool.icon}
                       </div>
-                      <span className={`text-[10px] font-mono px-2.5 py-1 rounded-full border ${tool.tag.includes("Free") ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20" : tool.tag.includes("High-Ticket") ? "bg-cyan-500/10 text-cyan-300 border-cyan-500/20 shadow-[0_0_10px_rgba(6,182,212,0.2)]" : "bg-purple-500/10 text-purple-300 border-purple-500/20"}`}>
+                      <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border bg-emerald-500/10 text-emerald-300 border-emerald-500/20">
                         {tool.tag}
                       </span>
                     </div>
