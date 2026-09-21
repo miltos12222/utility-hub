@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { 
   Link2, FileText, Lock, Code, QrCode, Sparkles, 
-  Search, ArrowRight, Zap, Image as ImageIcon, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp 
+  Search, ArrowRight, Zap, Palette, Mail, Briefcase, Shield, Cpu, TrendingUp, Globe, Box
 } from "lucide-react";
 
 export default function Home() {
@@ -108,8 +108,8 @@ export default function Home() {
       {/* 3D BACKGROUND GLOW ORBS WITH ADVANCED ANIMATION */}
       <motion.div 
         animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1],
+          scale: [1, 1.25, 1],
+          opacity: [0.1, 0.22, 0.1],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-500/15 rounded-full blur-[140px] pointer-events-none" 
@@ -125,20 +125,20 @@ export default function Home() {
 
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 space-y-16 w-full relative z-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 space-y-20 w-full relative z-10">
         
-        {/* 3D HERO SECTION */}
+        {/* 3D HERO SECTION WITH INTERACTIVE TILT OBJECT */}
         <motion.section 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto space-y-6 perspective-1000"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center max-w-3xl mx-auto space-y-8 perspective-1000"
         >
           <motion.div 
             whileHover={{ scale: 1.05 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(6,182,212,0.15)]"
           >
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" /> Next-Gen 3D AI Platform • 100% Free
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-spin" /> Next-Gen 3D AI Platform • 2030 Standard
           </motion.div>
           
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
@@ -151,10 +151,33 @@ export default function Home() {
           <p className="text-zinc-400 text-xs sm:text-base leading-relaxed px-2">
             Δωρεάν καθημερινά utilities και προηγμένες 3D AI υπηρεσίες, διαθέσιμες σε όλους χωρίς περιορισμούς.
           </p>
+
+          {/* INTERACTIVE 3D ROTATING CUBE / MODEL OBJECT */}
+          <div className="flex justify-center pt-2">
+            <motion.div
+              drag
+              dragConstraints={{ left: -50, right: 50, top: -30, bottom: 30 }}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ rotate: { duration: 25, repeat: Infinity, ease: "linear" } }}
+              className="w-32 h-32 rounded-3xl bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-emerald-500/20 border border-white/20 backdrop-blur-xl shadow-[0_0_40px_rgba(6,182,212,0.3)] flex flex-col items-center justify-center cursor-grab active:cursor-grabbing group relative"
+            >
+              <div className="absolute inset-0 rounded-3xl bg-cyan-400/5 animate-ping pointer-events-none" />
+              <Box className="w-10 h-10 text-cyan-400 group-hover:scale-125 transition-transform duration-300" />
+              <span className="text-[10px] font-mono text-cyan-300 mt-2 font-bold tracking-widest uppercase">3D Interactive</span>
+            </motion.div>
+          </div>
         </motion.section>
 
-        {/* SEARCH BAR */}
-        <section className="max-w-xl mx-auto px-2">
+        {/* SEARCH BAR WITH SCROLL REVEAL */}
+        <motion.section 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-xl mx-auto px-2"
+        >
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-500" />
             <div className="relative">
@@ -168,10 +191,16 @@ export default function Home() {
               />
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        {/* 3D TILT TOOLS GRID */}
-        <section className="space-y-6">
+        {/* 3D TILT TOOLS GRID WITH SCROLL REVEAL */}
+        <motion.section 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="space-y-6"
+        >
           <div className="flex items-center justify-between border-b border-white/10 pb-4 px-2">
             <h2 className="text-lg sm:text-xl font-bold flex items-center gap-2">
               <Zap className="w-5 h-5 text-cyan-400 animate-bounce" /> Πλατφόρμα Υπηρεσιών ({filteredTools.length})
@@ -183,6 +212,10 @@ export default function Home() {
             {filteredTools.map((tool, idx) => (
               <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
                 whileHover={{ 
                   y: -10, 
                   scale: 1.04,
@@ -191,7 +224,6 @@ export default function Home() {
                   boxShadow: "0 25px 50px -12px rgba(6, 182, 212, 0.25)"
                 }}
                 whileTap={{ scale: 0.96 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="h-full"
               >
                 <Link 
@@ -224,7 +256,7 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
       </main>
 
