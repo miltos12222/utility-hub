@@ -5,7 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowLeft, Send, Copy, Check, FileText, Download, DollarSign, Clock, Building } from "lucide-react";
+import { Sparkles, ArrowLeft, Send, Copy, Check, FileText, Download, DollarSign, Clock, Building, BookmarkCheck } from "lucide-react";
+import { saveItemToWorkspace, downloadFile } from "@/utils/workspaceHelpers";
 
 export default function AiInvoiceReminderTool() {
   const [clientName, setClientName] = useState("");
@@ -15,6 +16,7 @@ export default function AiInvoiceReminderTool() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ emailSubject: string; emailBody: string; shortMessage: string } | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [savedStatus, setSavedStatus] = useState<string | null>(null);
 
   const handleGenerate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,8 +41,16 @@ export default function AiInvoiceReminderTool() {
     setTimeout(() => setCopiedField(null), 2000);
   };
 
-  const handleDownloadPDF = () => {
-    window.print();
+  const handleDownload = () => {
+    if (!result) return;
+    const fullText = `ΘΕΜΑ: ${result.emailSubject}\n\nΚΕΙΜΕΝΟ EMAIL:\n${result.emailBody}\n\nΣΥΝΤΟΜΟ ΜΗΝΥΜΑ:\n${result.shortMessage}`;
+    downloadFile(`invoice-reminder-${clientName || "client"}.txt`, fullText);
+  };
+
+  const handleSaveWorkspace = (title: string, text: string, fieldKey: string) => {
+    saveItemToWorkspace(title, "Invoice Reminder", text);
+    setSavedStatus(fieldKey);
+    setTimeout(() => setSavedStatus(null), 2000);
   };
 
   return (
@@ -71,7 +81,7 @@ export default function AiInvoiceReminderTool() {
               AI Invoice & Payment Reminder
             </h1>
             <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-              Δημιουργήστε επαγγελματικά μηνύματα υπενθύμισης πληρωμής για απλήρωτα τιμολόγια και κατεβάστε τα σε PDF.
+              Δημιουργήστε επαγγελματικά μηνύματα υπενθύμισης πληρωμής και αποθηκεύστε τα άμεσα στο Workspace Vault σας.
             </p>
           </div>
         </div>
@@ -166,7 +176,7 @@ export default function AiInvoiceReminderTool() {
 
           </form>
 
-          {/* RESULTS DISPLAY WITH FADING & PDF DOWNLOAD */}
+          {/* RESULTS DISPLAY */}
           {result && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -179,10 +189,10 @@ export default function AiInvoiceReminderTool() {
                   ✨ Το μήνυμα υπενθύμισης είναι έτοιμο:
                 </h3>
                 <button
-                  onClick={handleDownloadPDF}
+                  onClick={handleDownload}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold transition-all cursor-pointer"
                 >
-                  <Download className="w-4 h-4" /> Λήψη / Εκτύπωση σε PDF
+                  <Download className="w-4 h-4" /> Άμεση Λήψη Αρχείου (TXT)
                 </button>
               </div>
 
@@ -196,13 +206,21 @@ export default function AiInvoiceReminderTool() {
               <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-400 font-bold">2. Κύριο Κείμενο Email</span>
-                  <button
-                    onClick={() => copyToClipboard(result.emailBody, "body")}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono text-emerald-400 transition-colors cursor-pointer"
-                  >
-                    {copiedField === "body" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedField === "body" ? "Αντιγράφηκε!" : "Αντιγραφή"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleSaveWorkspace(`Υπενθύμιση: ${clientName}`, result.emailBody, "body")}
+                      className="flex items-center gap-1 px-3 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-xs font-mono text-cyan-400 transition-colors cursor-pointer"
+                    >
+                      <BookmarkCheck className="w-3.5 h-3.5" /> {savedStatus === "body" ? "Αποθηκεύτηκε!" : "Save to Workspace"}
+                    </button>
+                    <button
+                      onClick={() => copyToClipboard(result.emailBody, "body")}
+                      className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono text-emerald-400 transition-colors cursor-pointer"
+                    >
+                      {copiedField === "body" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === "body" ? "Αντιγράφηκε!" : "Αντιγραφή"}</span>
+                    </button>
+                  </div>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-200 whitespace-pre-wrap leading-relaxed">{result.emailBody}</p>
               </div>
@@ -211,13 +229,21 @@ export default function AiInvoiceReminderTool() {
               <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-zinc-400 font-bold">3. Σύντομο Μήνυμα (Chat / LinkedIn / Viber)</span>
-                  <button
-                    onClick={() => copyToClipboard(result.shortMessage, "short")}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono text-emerald-400 transition-colors cursor-pointer"
-                  >
-                    {copiedField === "short" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedField === "short" ? "Αντιγράφηκε!" : "Αντιγραφή"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleSaveWorkspace(`Chat: ${clientName}`, result.shortMessage, "short")}
+                      className="flex items-center gap-1 px-3 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-xs font-mono text-cyan-400 transition-colors cursor-pointer"
+                    >
+                      <BookmarkCheck className="w-3.5 h-3.5" /> {savedStatus === "short" ? "Αποθηκεύτηκε!" : "Save to Workspace"}
+                    </button>
+                    <button
+                      onClick={() => copyToClipboard(result.shortMessage, "short")}
+                      className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono text-emerald-400 transition-colors cursor-pointer"
+                    >
+                      {copiedField === "short" ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === "short" ? "Αντιγράφηκε!" : "Αντιγραφή"}</span>
+                    </button>
+                  </div>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-200 whitespace-pre-wrap leading-relaxed">{result.shortMessage}</p>
               </div>
